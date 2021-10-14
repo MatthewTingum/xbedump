@@ -20,12 +20,12 @@
 #include <stdint.h>
 #include <string.h>
 #include <assert.h>
+#include <openssl/sha.h>
 #include "xboxlib.h"
 #include "xbestructure.h"
    
 
 #include "giants.h"
-#include "sha1.h"
 
 
 // prototype
@@ -395,12 +395,12 @@ int VerifySignaturex(void *xbe,int debugout) {
 
 void shax(unsigned char *result, unsigned char *data, unsigned int len)
 {
-	struct SHA1Context context;
+	SHA_CTX ctx;
    	
-   	SHA1Reset(&context);
-	SHA1Input(&context, (unsigned char *)&len, 4);
-	SHA1Input(&context,data,len);
-	SHA1Result(&context,result);	
+   	SHA1_Init(&ctx);
+	SHA1_Update(&ctx, (unsigned char *)&len, 4);
+	SHA1_Update(&ctx,data,len);
+	SHA1_Final(result, &ctx);	
 }
 
 
